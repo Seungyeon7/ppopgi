@@ -15,24 +15,20 @@ body{
   font-family:'Segoe UI',sans-serif;
   position:relative;
   gap:4px;
-  padding:0;
-  margin:0;
 }
 canvas#starCanvas{position:fixed;inset:0;pointer-events:none;z-index:0;}
 
-.top-bar{
-  display:flex;flex-direction:column;align-items:center;gap:6px;z-index:2;
-}
+.top-bar{display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;}
 .lights-strip{display:flex;gap:7px;}
 .light{width:12px;height:12px;border-radius:50%;animation:blink 0.7s infinite alternate;}
 .light:nth-child(even){animation-delay:0.35s;}
 @keyframes blink{0%{opacity:1;box-shadow:0 0 8px 3px currentColor;}100%{opacity:0.3;box-shadow:none;}}
 
-.banner-wrap{display:flex;align-items:center;gap:0;}
+.banner-wrap{display:flex;align-items:center;}
 .banner{
   background:linear-gradient(135deg,#ffd700 0%,#ffaa00 50%,#ffd700 100%);
   color:#7a1200;font-size:20px;font-weight:700;
-  padding:10px 28px;border-radius:4px;
+  padding:9px 28px;border-radius:4px;
   border:3px solid #ffaa00;
   box-shadow:0 0 0 3px #7a1200,0 4px 18px rgba(255,200,0,0.4);
   letter-spacing:3px;white-space:nowrap;position:relative;
@@ -43,20 +39,27 @@ canvas#starCanvas{position:fixed;inset:0;pointer-events:none;z-index:0;}
 }
 .banner::before{left:-18px;border-right:18px solid #ffaa00;}
 .banner::after{right:-18px;border-left:18px solid #ffaa00;}
-.banner-star{
-  font-size:20px;
-  width:32px;text-align:center;
-  filter:drop-shadow(0 0 8px #ffd700);
-  flex-shrink:0;
-  position:relative;z-index:1;
+
+/* 모드 선택 버튼 */
+.mode-wrap{display:flex;gap:10px;z-index:2;}
+.mode-btn{
+  padding:7px 22px;font-size:14px;font-weight:700;
+  border-radius:30px;border:2px solid rgba(255,220,80,0.4);
+  background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.55);
+  cursor:pointer;letter-spacing:1px;transition:all 0.18s;
+}
+.mode-btn:hover{background:rgba(255,220,80,0.15);color:#ffd700;border-color:#ffd700;}
+.mode-btn.active{
+  background:linear-gradient(135deg,#ffd700,#ffaa00);
+  color:#7a1200;border-color:#ffaa00;
+  box-shadow:0 2px 12px rgba(255,180,0,0.4);
 }
 
 .main-row{
   display:flex;flex-direction:row;
   align-items:center;justify-content:center;
-  gap:60px;z-index:2;width:100%;padding:0 40px;
+  gap:50px;z-index:2;width:100%;padding:0 36px;
 }
-
 #canvas-wrap{position:relative;flex-shrink:0;}
 #wheelCanvas{display:block;border-radius:50%;filter:drop-shadow(0 0 24px rgba(255,200,0,0.4));}
 #pointer{
@@ -78,35 +81,29 @@ canvas#starCanvas{position:fixed;inset:0;pointer-events:none;z-index:0;}
 #center-btn:hover{transform:translate(-50%,-50%) scale(1.1);box-shadow:0 0 22px rgba(255,220,0,0.6);}
 #center-btn:active{transform:translate(-50%,-50%) scale(0.96);}
 
-.right-panel{
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  gap:16px;min-width:220px;
-}
+.right-panel{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;min-width:200px;}
 .result-card{
   background:rgba(255,255,255,0.06);
   border:2px solid rgba(255,220,80,0.25);
-  border-radius:20px;
-  padding:28px 40px;
-  display:flex;flex-direction:column;
-  align-items:center;gap:8px;
+  border-radius:20px;padding:22px 36px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
 }
-#result-label{font-size:14px;color:#c9b8ff;letter-spacing:2px;}
+#result-label{font-size:13px;color:#c9b8ff;letter-spacing:2px;}
 #result-num{
-  font-size:110px;font-weight:700;line-height:1;
+  font-size:100px;font-weight:700;line-height:1;
   text-shadow:0 0 24px currentColor;
   transition:transform 0.3s cubic-bezier(.17,.67,.35,1.5);
-  color:#ffd700;
+  color:#ffd700;min-width:120px;text-align:center;
 }
 .spin-btn-big{
-  padding:14px 44px;font-size:18px;font-weight:700;
+  padding:13px 40px;font-size:17px;font-weight:700;
   background:linear-gradient(135deg,#ffd700,#ffaa00);
   color:#7a1200;border:none;border-radius:40px;
   cursor:pointer;letter-spacing:2px;
   box-shadow:0 4px 20px rgba(255,180,0,0.4);
   transition:transform 0.1s,box-shadow 0.1s;
 }
-.spin-btn-big:hover{transform:scale(1.06);box-shadow:0 6px 28px rgba(255,180,0,0.55);}
+.spin-btn-big:hover{transform:scale(1.06);}
 .spin-btn-big:active{transform:scale(0.97);}
 
 .watermark{
@@ -130,10 +127,12 @@ canvas#starCanvas{position:fixed;inset:0;pointer-events:none;z-index:0;}
 
 <div class="top-bar">
   <div class="lights-strip" id="lights"></div>
-  <div class="banner-wrap">
-    <div class="banner">행운의 발표뽑기</div>
-  </div>
+  <div class="banner-wrap"><div class="banner">행운의 발표뽑기</div></div>
   <div class="lights-strip" id="lights2"></div>
+  <div class="mode-wrap">
+    <button class="mode-btn active" id="btn6" onclick="setMode(6)">1 ~ 6</button>
+    <button class="mode-btn" id="btn32" onclick="setMode(32)">1 ~ 32</button>
+  </div>
 </div>
 
 <div class="main-row">
@@ -183,11 +182,51 @@ const lc=['#ff4444','#44aaff','#ffdd00','#44ff88','#ff88cc','#ff8800'];
 const canvasEl=document.getElementById('wheelCanvas');
 const ctx=canvasEl.getContext('2d');
 const wrap=document.getElementById('canvas-wrap');
-let R=200,CX,CY;
+const resultNum=document.getElementById('result-num');
+
+// 색상 팔레트 (6색 반복)
+const palette=['#E24B4A','#378ADD','#639922','#BA7517','#7F77DD','#D4537E'];
+
+// 모드
+let MODE=6;
+let SEGS, segColors, labels;
+
+function buildMode(n){
+  segColors=[];labels=[];
+  if(n===6){
+    SEGS=18;
+    for(let r=0;r<3;r++) for(let i=1;i<=6;i++){
+      labels.push(String(i));
+      segColors.push(palette[(i-1)%palette.length]);
+    }
+  } else {
+    SEGS=n;
+    for(let i=1;i<=n;i++){
+      labels.push(String(i));
+      segColors.push(palette[(i-1)%palette.length]);
+    }
+  }
+}
+buildMode(6);
+
+function setMode(n){
+  if(spinning) return;
+  MODE=n;
+  buildMode(n);
+  currentAngle=0;
+  resultNum.textContent='—';
+  resultNum.style.color='#ffd700';
+  resultNum.style.textShadow='';
+  document.getElementById('btn6').classList.toggle('active', n===6);
+  document.getElementById('btn32').classList.toggle('active', n===32);
+  resizeWheel();
+}
+
+let R=200,CX,CY,currentAngle=0,spinning=false;
 
 function resizeWheel(){
-  const availH = window.innerHeight - 56; // 크롬 탭바 높이 제외
-  R=Math.min(Math.floor(availH*0.36),220);
+  const availH=Math.max(window.innerHeight-56,300);
+  R=Math.max(Math.min(Math.floor(availH*0.36),220),80);
   const size=R*2+10;
   canvasEl.width=size;canvasEl.height=size;
   wrap.style.width=size+'px';wrap.style.height=size+'px';
@@ -195,61 +234,48 @@ function resizeWheel(){
   drawWheel(currentAngle);
 }
 
-const SEGS=18;
-const bc=['#E24B4A','#378ADD','#639922','#BA7517','#7F77DD','#D4537E'];
-const segColors=[];
-for(let i=0;i<3;i++) bc.forEach(c=>segColors.push(c));
-const labels=['1','2','3','4','5','6','1','2','3','4','5','6','1','2','3','4','5','6'];
-
-// 화살표는 위쪽(12시 방향) = angle -π/2 에서 고정
-// 각 세그먼트 i는 startAngle + i*slice 부터 시작
-// 12시 방향에 해당하는 세그먼트를 정확히 구함
-function getWinner(angle){
-  const slice=(2*Math.PI)/SEGS;
-  // 12시 방향은 -π/2 (= 3π/2)
-  // 화살표가 가리키는 각도: -π/2
-  // 세그먼트 i는 [angle + i*slice, angle + (i+1)*slice] 범위
-  // 정규화: ((-π/2) - angle) mod 2π
-  let norm = ((-Math.PI/2 - angle) % (2*Math.PI) + 2*Math.PI) % (2*Math.PI);
-  return Math.floor(norm / slice) % SEGS;
-}
-
-let currentAngle=0, spinning=false;
-
 function drawWheel(angle){
-  if(!CX) return;
+  if(!CX||R<=0) return;
   const slice=(2*Math.PI)/SEGS;
   ctx.clearRect(0,0,canvasEl.width,canvasEl.height);
+
   for(let i=0;i<SEGS;i++){
-    const s=angle+i*slice, e=s+slice, m=s+slice/2;
+    const s=angle+i*slice,e=s+slice,m=s+slice/2;
     ctx.beginPath();ctx.moveTo(CX,CY);ctx.arc(CX,CY,R,s,e);ctx.closePath();
     ctx.fillStyle=segColors[i];ctx.fill();
-    ctx.strokeStyle='rgba(255,255,255,0.75)';ctx.lineWidth=2;ctx.stroke();
+    ctx.strokeStyle='rgba(255,255,255,0.75)';ctx.lineWidth=1.5;ctx.stroke();
+
+    // 글씨 크기: 칸이 많을수록 작게
+    const fs=Math.max(Math.round(R*(SEGS<=6?0.15:SEGS<=12?0.1:0.075)),10);
     ctx.save();
     ctx.translate(CX+(R*0.67)*Math.cos(m),CY+(R*0.67)*Math.sin(m));
     ctx.rotate(m+Math.PI/2);
     ctx.fillStyle='#fff';
-    ctx.font=`bold ${Math.round(R*0.15)}px sans-serif`;
+    ctx.font=`bold ${fs}px sans-serif`;
     ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.shadowColor='rgba(0,0,0,0.4)';ctx.shadowBlur=3;
     ctx.fillText(labels[i],0,0);
     ctx.restore();
   }
-  // 테두리 링
+
+  // 테두리
   ctx.beginPath();ctx.arc(CX,CY,R,0,2*Math.PI);
   ctx.strokeStyle='rgba(255,220,80,0.85)';ctx.lineWidth=5;ctx.stroke();
   // 중앙 원
-  const cr=Math.round(R*0.17);
+  const cr=Math.max(Math.round(R*0.17),12);
   ctx.beginPath();ctx.arc(CX,CY,cr,0,2*Math.PI);
   ctx.fillStyle='#fff';ctx.shadowColor='rgba(255,200,0,0.5)';ctx.shadowBlur=10;
   ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='#ddd';ctx.lineWidth=2;ctx.stroke();
   ctx.beginPath();ctx.arc(CX,CY,cr*0.22,0,2*Math.PI);ctx.fillStyle='#ccc';ctx.fill();
 }
 
-function easeOut(t){
-  // 초반 빠르게 출발, 후반 매우 천천히 감속
-  return 1 - Math.pow(1 - t, 4);
+function getWinner(angle){
+  const slice=(2*Math.PI)/SEGS;
+  let norm=((-Math.PI/2-angle)%(2*Math.PI)+2*Math.PI)%(2*Math.PI);
+  return Math.floor(norm/slice)%SEGS;
 }
+
+function easeOut(t){ return 1-Math.pow(1-t,4); }
 
 function spawnConfetti(color){
   for(let i=0;i<32;i++){
@@ -263,8 +289,6 @@ function spawnConfetti(color){
   }
 }
 
-const resultNum=document.getElementById('result-num');
-
 function spin(){
   if(spinning) return;
   spinning=true;
@@ -274,17 +298,15 @@ function spin(){
   resultNum.style.color='#ffd700';
   resultNum.textContent='—';
 
-  // 총 회전량: 최소 4바퀴 + 랜덤
-  const total=(4+Math.random()*2)*2*Math.PI + Math.random()*2*Math.PI;
-  const dur=6000+Math.random()*1000; // 기존 9000의 약 2/3
-  const sa=currentAngle, st=performance.now();
+  const total=(4+Math.random()*2)*2*Math.PI+Math.random()*2*Math.PI;
+  const dur=6000+Math.random()*1000;
+  const sa=currentAngle,st=performance.now();
 
   function frame(now){
     const t=Math.min((now-st)/dur,1);
     currentAngle=sa+total*easeOut(t);
     drawWheel(currentAngle);
     if(t<1){requestAnimationFrame(frame);return;}
-    // 정확히 최종값 고정
     currentAngle=sa+total;
     drawWheel(currentAngle);
     spinning=false;
